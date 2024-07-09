@@ -2,7 +2,7 @@
 import { Head, Link, usePage, useForm } from '@inertiajs/vue3'
 import DefaultLayout from '~/components/layouts/page/Default.vue'
 import Spinner from '~/components/feedback/Spinner.vue'
-import { PhotoIcon, TrashIcon } from '@heroicons/vue/24/outline'
+import { PhotoIcon, TrashIcon, ArrowUpRightIcon } from '@heroicons/vue/24/outline'
 
 defineProps({ resource: {
   id: Number,
@@ -35,7 +35,15 @@ if (!title && page.props.resource.type) {
     <DefaultLayout>
       <template #main>
         <div class="flex space-x-between items-center justify-between">
-          <h1 class="text-2xl">{{ title }}</h1>
+          <div>
+            <h1 class="text-2xl">{{ title }}</h1>
+            <div class="">
+              <a :href="`/api/v1/resources/${resource.id}`" target="_blank" class="flex items-center justify-start space-x-1 mt-1 text-base text-primary-500 dark:text-primary-300">
+                <span>View JSON</span>
+                <ArrowUpRightIcon class="w-3 h-3" />
+              </a>
+            </div>
+          </div>
           <Link :href="`/dashboard/resources/${resource.id}`" method="delete" as="button" type="button" class="bg-error rounded-full px-3.5 py-2 text-sm font-semibold text-center text-nowrap no-underline">
             <span class="flex flex-row space-x-2">
               <TrashIcon class="w-5 h-5" />

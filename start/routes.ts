@@ -16,6 +16,7 @@ const RegisterController = () => import('../app/controllers/auth/register_contro
 const DashboardController = () => import('#controllers/dashboard_controller')
 const RepresentationsController = () => import('#controllers/representations_controller')
 const ResourcesController = () => import('#controllers/resources_controller')
+const ApiResourcesController = () => import('#controllers/api/v1/resources_controller')
 const OrganizationsController = () => import('#controllers/organizations_controller')
 
 // Home.
@@ -45,3 +46,13 @@ router
   .use(middleware.auth())
   .prefix('dashboard')
   .as('dashboard')
+// JSON API.
+router
+  .group(() => {
+    router
+      .group(() => {
+        router.resource('resources', ApiResourcesController).only(['index', 'show'])
+      })
+      .prefix('v1')
+  })
+  .prefix('api')
