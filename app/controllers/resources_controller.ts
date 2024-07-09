@@ -1,4 +1,5 @@
 import Resource from '#models/resource'
+import Organization from '#models/organization'
 
 import type { HttpContext } from '@adonisjs/core/http'
 
@@ -16,14 +17,15 @@ export default class ResourcesController {
    * Display form to create a new record
    */
   async create({ inertia }: HttpContext) {
-    return inertia.render('dashboard/resources/create')
+    const organizations = await Organization.query().select(['id', 'title']).orderBy('title')
+    return inertia.render('dashboard/resources/create', { organizations })
   }
 
   /**
    * Handle form submission for the create action
    */
   async store({ request, response }: HttpContext) {
-    const data = request.only(['title', 'source_uri', 'canonical_id', 'resource_type'])
+    const data = request.only(['title', 'sourceUri', 'canonicalId', 'type', 'organizationId'])
     console.log(data)
     const resource = await Resource.create(data)
     return response.redirect().toRoute('dashboard.resources.show', { id: resource.id })
@@ -33,7 +35,10 @@ export default class ResourcesController {
    * Show individual record
    */
   async show({ params, inertia }: HttpContext) {
-    const resource = await Resource.findByOrFail('id', params.id)
+    const resource = await Resource.query()
+      .where('id', params.id)
+      .preload('organization')
+      .firstOrFail()
     return inertia.render('dashboard/resources/show', { resource })
   }
 

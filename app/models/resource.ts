@@ -1,21 +1,32 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@adonisjs/lucid/orm'
-
+import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
+import { column, BaseModel, belongsTo, hasMany } from '@adonisjs/lucid/orm'
+import Organization from '#models/organization'
+import Representation from '#models/representation'
 export default class Resource extends BaseModel {
+  @hasMany(() => Representation)
+  declare representations: HasMany<typeof Representation>
+
   @column({ isPrimary: true })
   declare id: number
+
+  @column()
+  declare organizationId: number
+
+  @belongsTo(() => Organization)
+  declare organization: BelongsTo<typeof Organization>
 
   @column()
   declare title: string | null
 
   @column()
-  declare source_uri: string
+  declare sourceUri: string
 
   @column()
-  declare canonical_id: string
+  declare canonicalId: string
 
   @column()
-  declare resource_type: string
+  declare type: string
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

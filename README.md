@@ -35,7 +35,17 @@ Now start the container:
 docker compose up -d
 ```
 
-After starting you can access the PG Admin app by logging into `http://localhost:5050` using:
+## Create tables
+
+You can get a start on a fresh install by running [migrations](https://lucid.adonisjs.com/docs/migrations) and seeding the database.
+
+```bash
+node ace migration:fresh --seed
+```
+
+## PG Admin
+
+You can access the PG Admin database administration GUI by logging into `http://localhost:5050` using:
 
 - username: `admin@si.edu`
 - password: `password`
@@ -45,11 +55,3 @@ The first time you login to PG Admin you'll want to register your access to `db`
 - hostname: `db`
 - username: `admin`
 - password: `password`
-
-## Create tables
-
-You can get a start on a fresh install by running [migrations](https://lucid.adonisjs.com/docs/migrations) and seeding the database.
-
-```bash
-node ace migration:run && node ace db:seed
-```

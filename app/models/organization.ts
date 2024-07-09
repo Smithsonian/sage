@@ -1,7 +1,15 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@adonisjs/lucid/orm'
+import type { HasMany } from '@adonisjs/lucid/types/relations'
+import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
+import Resource from '#models/resource'
 
+/**
+ * Organizations which own resources.
+ */
 export default class Organization extends BaseModel {
+  @hasMany(() => Resource)
+  declare resources: HasMany<typeof Resource>
+
   @column({ isPrimary: true })
   declare id: number
 
