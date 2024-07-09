@@ -19,7 +19,7 @@ export default class extends BaseSeeder {
     ])
     await Resource.createMany([
       {
-        title: 'Smithsonian American Art Museum',
+        title: 'Pa-lan-te',
         sourceUri: 'https://ids.si.edu/ids/deliveryService?id=SAAM-2020.25.1_1',
         canonicalId: 'SAAM-2020.25.1',
         organizationId: 1,

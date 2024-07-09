@@ -9,7 +9,6 @@ export default class ResourcesController {
    */
   async index({ inertia }: HttpContext) {
     const resources = await Resource.all()
-    console.log(resources)
     return inertia.render('dashboard/resources/index', { resources })
   }
 
@@ -26,7 +25,6 @@ export default class ResourcesController {
    */
   async store({ request, response }: HttpContext) {
     const data = request.only(['title', 'sourceUri', 'canonicalId', 'type', 'organizationId'])
-    console.log(data)
     const resource = await Resource.create(data)
     return response.redirect().toRoute('dashboard.resources.show', { id: resource.id })
   }
@@ -38,6 +36,7 @@ export default class ResourcesController {
     const resource = await Resource.query()
       .where('id', params.id)
       .preload('organization')
+      .preload('representations')
       .firstOrFail()
     return inertia.render('dashboard/resources/show', { resource })
   }

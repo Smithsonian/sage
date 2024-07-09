@@ -14,6 +14,7 @@ const LogoutController = () => import('#controllers/auth/logout_controller')
 const LoginController = () => import('#controllers/auth/login_controller')
 const RegisterController = () => import('../app/controllers/auth/register_controller.js')
 const DashboardController = () => import('#controllers/dashboard_controller')
+const RepresentationsController = () => import('#controllers/representations_controller')
 const ResourcesController = () => import('#controllers/resources_controller')
 const OrganizationsController = () => import('#controllers/organizations_controller')
 
@@ -34,6 +35,10 @@ router
 router
   .group(() => {
     router.get('/', [DashboardController, 'show']).as('index')
+    router
+      .resource('representations', RepresentationsController)
+      .as('representations')
+      .only(['store', 'destroy'])
     router.resource('resources', ResourcesController).as('resources')
     router.resource('organizations', OrganizationsController).as('organizations')
   })
