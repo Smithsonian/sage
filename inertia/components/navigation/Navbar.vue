@@ -5,7 +5,7 @@ import ThemeSwitcher from '~/components/actions/ThemeSwitcher.vue'
 </script>
 
 <template>
-  <header class="sticky top-0 z-20 w-full text-neutral-900 dark:text-neutral-100 bg-gradient-to-t from-primary-300 to-primary-200 dark:from-primary-800/25 dark:to-primary-900/25 shadow-md">
+  <header class="sticky top-0 z-20 w-full text-neutral-900 dark:text-neutral-100 bg-gradient-to-t from-primary-300/50 to-primary-200/50 dark:from-primary-800/50 dark:to-primary-900/50 shadow-md">
     <div class="flex justify-between items-center h-18 lg:h-20 px-1 md:px-4 lg:px-6">
       <div>
         <Link href="/dashboard" title="Dashboard home" :class="{ 'cursor-default': $page.url === '/dashboard' }">
