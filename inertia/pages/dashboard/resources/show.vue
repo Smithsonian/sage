@@ -2,7 +2,7 @@
 import { Head, Link, usePage, useForm } from '@inertiajs/vue3'
 import DefaultLayout from '~/components/layouts/page/Default.vue'
 import Spinner from '~/components/feedback/Spinner.vue'
-import { PhotoIcon, TrashIcon, ArrowUpRightIcon } from '@heroicons/vue/24/outline'
+import { PhotoIcon, TrashIcon, ArrowUpRightIcon, PaperAirplaneIcon } from '@heroicons/vue/24/outline'
 
 defineProps({ resource: {
   id: Number,
@@ -144,7 +144,10 @@ if (!title && page.props.resource.type) {
               <div class="flex justify-end">
                 <button type="submit" :disabled="form.processing" class="w-32 rounded-full bg-accent-500 dark:bg-accent-800 px-3.5 py-2 text-sm font-semibold text-center text-neutral-50 hover:shadow-md hover:bg-accent-400 dark:hover:bg-accent-600 hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-300 no-underline">
                   <span v-if="form.processing"><Spinner classes="w-5 h-5" /></span>
-                  <span v-else>Create</span>
+                  <span v-else class="flex flex-row items-center justify-center space-x-2">
+                    <span>Generate</span>
+                    <PaperAirplaneIcon class="w-4 h-4" />
+                  </span>
                 </button>
               </div>
             </form>
