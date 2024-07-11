@@ -55,3 +55,29 @@ The first time you login to PG Admin you'll want to register your access to `db`
 - hostname: `db`
 - username: `admin`
 - password: `password`
+
+## Deploy
+
+For rapid development and testing, the `fly.toml`, `Dockerfile`, and `docker-entrypoint.js` files are provided to make it quick and easy to deploy to [Fly.io](https://fly.io). See the AdonisJS [documentation for deployment](https://docs.adonisjs.com/guides/getting-started/deployment) on any other platform.
+
+To get started you'll need a Fly.io account, and will need to [install the Fly CLI tool](https://fly.io/docs/flyctl/install/) on your local machine.
+
+Run the [launch](https://fly.io/docs/apps/launch/#) command, without initially deploying, from your local project directory to configure the remote application.
+
+```bash
+fly launch --no-deploy
+```
+
+Before deploying your application you'll need to set _all_ the project's environmental variables as Fly.io [secrets](https://fly.io/docs/reference/secrets/), including the database credentials and connection information output when the new Postgres cluster is created.
+
+for example:
+
+```bash
+fly secrets set DB_USER=postgres
+```
+
+Then deploy your application
+
+```bash
+fly deploy
+```

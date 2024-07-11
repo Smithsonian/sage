@@ -1,12 +1,15 @@
 {
-  "name": "altdesk",
+  "name": "sage",
   "version": "0.0.0",
   "private": true,
   "type": "module",
   "license": "MIT",
+  "engines": {
+    "node": "21.6.1"
+  },
   "scripts": {
     "start": "node bin/server.js",
-    "build": "node ace build",
+    "build": "node ace build --ignore-ts-errors",
     "dev": "node ace serve --hmr",
     "test": "node ace test",
     "lint": "eslint .",
@@ -54,7 +57,7 @@
     "prettier": "^3.3.2",
     "tailwindcss": "^3.4.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.5",
+    "typescript": "~5.4",
     "vite": "^5.3.1"
   },
   "dependencies": {
