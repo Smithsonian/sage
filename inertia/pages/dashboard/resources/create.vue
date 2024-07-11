@@ -36,18 +36,18 @@ const form = useForm({
             <div v-if="form.errors.sourceUri" class="block text-sm font-medium leading-6 text-error">{{ form.errors.sourceUri }}</div>
           </div>
           <div>
+            <label for="canonical-id" class="block text-sm font-medium leading-6">Canonical ID</label>
+            <input id="canonical-id" v-model="form.canonicalId" type="text" class="block w-full rounded-md border-0 bg-neutral-100 dark:bg-neutral-600 py-1.5 text-neutral-900 dark:text-neutral-50 shadow-sm ring-1 dark:ring-0 ring-inset focus:ring-2 focus:ring-inset focus:ring-accent-500 focus:outline-none sm:text-sm sm:leading-6">
+            <div class="block text-sm font-medium leading-6 text-neutral-400">The unique identifier used in the remote resource source. (Required)</div>
+            <div v-if="form.errors.canonicalId" class="block text-sm font-medium leading-6 text-error">{{ form.errors.canonicalId }}</div>
+          </div>
+          <div>
             <label for="organization-id" class="block text-sm font-medium leading-6">Organization</label>
             <select id="organization-id" v-model="form.organizationId" class="block w-full rounded-md border-0 bg-neutral-100 dark:bg-neutral-600 py-1.5 text-neutral-900 dark:text-neutral-50 shadow-sm ring-1 dark:ring-0 ring-inset focus:ring-2 focus:ring-inset focus:ring-accent-500 focus:outline-none sm:text-sm sm:leading-6">
               <option disabled selected>Select an organization</option>
               <option v-for="organization in organizations" :value="organization.id" :key="organization.id">{{ organization.title }}</option>
             </select>
             <div v-if="form.errors.organizationId" class="block text-sm font-medium leading-6 text-error">{{ form.errors.organizationId }}</div>
-          </div>
-          <div>
-            <label for="canonical-id" class="block text-sm font-medium leading-6">Canonical ID</label>
-            <input id="canonical-id" v-model="form.canonicalId" type="text" class="block w-full rounded-md border-0 bg-neutral-100 dark:bg-neutral-600 py-1.5 text-neutral-900 dark:text-neutral-50 shadow-sm ring-1 dark:ring-0 ring-inset focus:ring-2 focus:ring-inset focus:ring-accent-500 focus:outline-none sm:text-sm sm:leading-6">
-            <div class="block text-sm font-medium leading-6 text-neutral-400">The unique identifier used in the remote resource source.</div>
-            <div v-if="form.errors.canonicalId" class="block text-sm font-medium leading-6 text-error">{{ form.errors.canonicalId }}</div>
           </div>
           <div>
             <label for="resource-type" class="block text-sm font-medium leading-6">Resource Type</label>
