@@ -2,6 +2,7 @@
 node_modules
 build
 tmp
+coverage
 
 # Secrets
 .env
@@ -27,3 +28,6 @@ yarn-error.log
 
 # Platform specific
 .DS_Store
+
+# Docker volumes
+data
