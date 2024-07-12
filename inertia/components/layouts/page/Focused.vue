@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import ThemeSwitcher from '~/components/actions/ThemeSwitcher.vue'
+import Alert from '~/components/feedback/Alert.vue'
+defineProps<{ notification?: Object | undefined }>();
 </script>
 
 <template>
@@ -12,5 +14,6 @@ import ThemeSwitcher from '~/components/actions/ThemeSwitcher.vue'
         <slot v-cloak></slot>
       </div>
     </section>
+    <Alert v-if="notification" :notification="notification" :key="notification.id" />
   </div>
 </template>

@@ -1,4 +1,20 @@
-import vine from '@vinejs/vine'
+import vine, { SimpleMessagesProvider } from '@vinejs/vine'
+
+const messages = {
+  'required': "We're going to need a {{ field }} here, thx.",
+  'sourceUri.required':
+    "A resource isn't a resource without a source Uniform <em>Resource</em> Identifier.",
+  'organizationId.required': 'Who does this resource belong to?',
+  'url': "There's something wrong with this URL. 🤔",
+}
+
+const fields = {
+  sourceUri: 'source URI',
+  canonicalId: 'canonical ID',
+  organizationId: 'organization ID',
+}
+
+vine.messagesProvider = new SimpleMessagesProvider(messages, fields)
 
 /**
  * Validates the Resource's creation action

@@ -1,4 +1,10 @@
-import vine from '@vinejs/vine'
+import vine, { SimpleMessagesProvider } from '@vinejs/vine'
+
+vine.messagesProvider = new SimpleMessagesProvider({
+  'required': "It's hard to log someone in without a {{ field }}",
+  'email': 'Is that a <em>real</em> email address? 🧐',
+  'password.required': "A blank password? That's not very secure. 😅",
+})
 
 export const registerValidator = vine.compile(
   vine.object({
