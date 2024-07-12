@@ -1,6 +1,6 @@
 import Resource from '#models/resource'
 import Organization from '#models/organization'
-
+import { createResourceValidator } from '#validators/resource'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class ResourcesController {
@@ -25,6 +25,7 @@ export default class ResourcesController {
    */
   async store({ request, response }: HttpContext) {
     const data = request.only(['title', 'sourceUri', 'canonicalId', 'type', 'organizationId'])
+    await createResourceValidator.validate(data)
     const resource = await Resource.create(data)
     return response.redirect().toRoute('dashboard.resources.show', { id: resource.id })
   }

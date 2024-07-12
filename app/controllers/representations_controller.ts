@@ -1,5 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Representation from '#models/representation'
+import { createRepresentationValidator } from '#validators/representation'
 import VisionService from '#services/vision_service'
 export default class RepresentationsController {
   /**
@@ -7,6 +8,7 @@ export default class RepresentationsController {
    */
   async store({ request, response }: HttpContext) {
     const data = request.only(['type', 'resourceId', 'prompt', 'uri'])
+    await createRepresentationValidator.validate(data)
     const vision = new VisionService()
     const generatedMessageData = await vision.generate(data.prompt, data.uri)
     const representation = await Representation.create({
@@ -14,7 +16,6 @@ export default class RepresentationsController {
       resourceId: data.resourceId,
       contents: generatedMessageData,
     })
-    console.log(representation)
     return response
       .redirect()
       .toRoute('dashboard.resources.show', { id: representation.resourceId })

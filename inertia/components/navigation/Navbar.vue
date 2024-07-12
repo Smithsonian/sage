@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3'
 import ThemeSwitcher from '~/components/actions/ThemeSwitcher.vue'
-
+const props = defineProps({ user: {
+  id: Number,
+  fullName: String,
+  email: String,
+} })
+const userInitials = props.user.fullName.split(' ').map((n: string) => n[0]).join('')
 </script>
 
 <template>
@@ -21,6 +26,9 @@ import ThemeSwitcher from '~/components/actions/ThemeSwitcher.vue'
       </div>
       <div class="flex space-x-2 items-center justify-center">
         <ThemeSwitcher />
+        <div v-if="props.user" class="flex items-center justify-center py-2 px-2.5 text-base font-semibold bg-neutral-200 dark:bg-neutral-950 bg-opacity-50 shadow-lg rounded-full">
+          <span>{{  userInitials }}</span>
+        </div>
         <Link href="/logout" method="post" as="button" type="button" class="mx-6 inline-flex justify-center px-3 py-1.5 text-base text-neutral-700 dark:text-neutral-300">Logout</Link>
       </div>
     </div>

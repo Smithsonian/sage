@@ -3,6 +3,7 @@ import { Head, Link, usePage, useForm } from '@inertiajs/vue3'
 import DefaultLayout from '~/components/layouts/page/Default.vue'
 import Spinner from '~/components/feedback/Spinner.vue'
 import { PhotoIcon, TrashIcon, ArrowUpRightIcon, PaperAirplaneIcon } from '@heroicons/vue/24/outline'
+import FormInputError from '~/components/feedback/FormInputError.vue'
 
 defineProps({ resource: {
   id: Number,
@@ -128,18 +129,19 @@ if (!title && page.props.resource.type) {
             >
               <div>
                 <label for="representation-type" class="block text-sm font-medium leading-6">Representation Type</label>
-                <select id="representation-type" v-model="form.type" class="block w-full rounded-md border-0 bg-neutral-100 dark:bg-neutral-600 py-1.5 text-neutral-900 dark:text-neutral-50 shadow-sm ring-1 dark:ring-0 ring-inset focus:ring-2 focus:ring-inset focus:ring-accent-500 focus:outline-none sm:text-sm sm:leading-6">
+                <select id="representation-type" v-model="form.type" :class="form.errors.type ? 'ring-error-500' : 'focus:ring-accent-500'" class="block w-full rounded-md border-0 bg-neutral-100 dark:bg-neutral-600 py-1.5 text-neutral-900 dark:text-neutral-50 shadow-sm ring-1 dark:ring-0 ring-inset focus:ring-2 focus:ring-inset focus:outline-none sm:text-sm sm:leading-6">
                   <option selected value="ALTTEXT">Alt text</option>
                   <option disabled value="TEXT">Long description</option>
                   <option disabled value="EMBEDDING">Embedding</option>
                 </select>
                 <div class="block text-sm font-medium leading-6 text-neutral-400">Currently, only alt text is supported.</div>
+                <FormInputError :errors="form.errors.type" />
               </div>
               <div>
                 <label for="prompt" class="block text-sm font-medium leading-6">Prompt</label>
-                <textarea id="prompt" v-model="form.prompt" rows="3" class="block w-full rounded-md border-0 bg-neutral-100 dark:bg-neutral-600 py-1.5 text-neutral-900 dark:text-neutral-50 shadow-sm ring-1 dark:ring-0 ring-inset focus:ring-2 focus:ring-inset focus:ring-accent-500 focus:outline-none sm:text-sm sm:leading-6" />
+                <textarea id="prompt" v-model="form.prompt" rows="3" :class="form.errors.prompt ? 'ring-error-500' : 'focus:ring-accent-500'" class="block w-full rounded-md border-0 bg-neutral-100 dark:bg-neutral-600 py-1.5 text-neutral-900 dark:text-neutral-50 shadow-sm ring-1 dark:ring-0 ring-inset focus:ring-2 focus:ring-inset focus:outline-none sm:text-sm sm:leading-6" />
                 <div class="block text-sm font-medium leading-6 text-neutral-400">Customize the default prompt text.</div>
-                <div v-if="form.errors.description" class="block text-sm font-medium leading-6 text-error">{{ form.errors.description }}</div>
+                <FormInputError :errors="form.errors.prompt" />
               </div>
               <div class="flex justify-end">
                 <button type="submit" :disabled="form.processing" class="w-32 rounded-full bg-accent-500 dark:bg-accent-800 px-3.5 py-2 text-sm font-semibold text-center text-neutral-50 hover:shadow-md hover:bg-accent-400 dark:hover:bg-accent-600 hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-300 no-underline">
