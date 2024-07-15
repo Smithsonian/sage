@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Navbar from '~/components/navigation/Navbar.vue'
 import Alert from '~/components/feedback/Alert.vue'
-defineProps<{ notification?: Object | undefined }>();
+defineProps<{ notification?: Object | undefined, errors?: Array<string> | undefined }>();
 </script>
 
 <template>
@@ -13,6 +13,9 @@ defineProps<{ notification?: Object | undefined }>();
     <footer>
       <slot name="footer" v-cloak></slot>
     </footer>
-    <Alert v-if="notification" :notification="notification" :key="notification.id" />
+    <div class="absolute inset-x-0 bottom-2 md:bottom-6 lg:bottom-12 flex space-x-4 lg:space-x-6 items-center justify-center">
+      <Alert v-if="notification" :notification="notification" :key="notification.id" :auto-close="true" />
+      <Alert v-for="error in errors" :notification="{ type: 'error', message: error }" :key="error" :auto-close="true" />
+    </div>
   </div>
 </template>

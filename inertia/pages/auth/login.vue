@@ -8,12 +8,13 @@ const form = useForm({
   password: null,
   remember: false,
 })
+
 </script>
 
 <template>
   <div>
     <Head title="Log in" />
-    <FocusedLayout>
+    <FocusedLayout :errors="$page.props.errorsBag">
       <h1 class="flex flex-col md:flex-row items-end justify-center space-x-4 lg:space-x-6 text-2xl md:text-4xl lg:text-6xl">
         <span class="flex items-end font-medium tracking-tight">Login</span>
       </h1>
