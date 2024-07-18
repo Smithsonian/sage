@@ -1,3 +1,5 @@
+import ModerationStatuses from '#enums/moderation_statuses'
+import RepresentationTypes from '#enums/representation_types'
 import vine, { SimpleMessagesProvider } from '@vinejs/vine'
 
 vine.messagesProvider = new SimpleMessagesProvider({
@@ -10,7 +12,8 @@ vine.messagesProvider = new SimpleMessagesProvider({
  */
 export const createRepresentationValidator = vine.compile(
   vine.object({
-    type: vine.enum(['ALTTEXT', 'TEXT', 'EMBEDDING']),
+    representationTypeId: vine.enum(RepresentationTypes),
+    moderationStatusId: vine.enum(ModerationStatuses),
     prompt: vine.string().trim(),
   })
 )

@@ -7,13 +7,21 @@ export default class RepresentationsController {
    * Handle form submission for the create action
    */
   async store({ request, response }: HttpContext) {
-    const data = request.only(['type', 'resourceId', 'prompt', 'uri'])
+    const data = request.only([
+      'resourceId',
+      'representationTypeId',
+      'moderationStatusId',
+      'prompt',
+      'uri',
+    ])
+    console.log(data)
     await createRepresentationValidator.validate(data)
     const vision = new VisionService()
     const generatedMessageData = await vision.generate(data.prompt, data.uri)
     const representation = await Representation.create({
-      type: data.type,
       resourceId: data.resourceId,
+      representationTypeId: data.representationTypeId,
+      moderationStatusId: data.moderationStatusId,
       contents: generatedMessageData,
     })
     return response

@@ -1,4 +1,5 @@
 import vine, { SimpleMessagesProvider } from '@vinejs/vine'
+import ResourceTypes from '#enums/resource_types'
 
 const messages = {
   'required': "We're going to need a {{ field }} here, thx.",
@@ -24,7 +25,7 @@ export const createResourceValidator = vine.compile(
     title: vine.string().trim().nullable(),
     sourceUri: vine.string().trim().url().normalizeUrl(),
     canonicalId: vine.string().trim(),
-    type: vine.enum(['IMAGE', 'TEXT', 'AUDIO', 'VIDEO']),
+    resourceTypeId: vine.enum(ResourceTypes),
     organizationId: vine.number().positive(),
   })
 )

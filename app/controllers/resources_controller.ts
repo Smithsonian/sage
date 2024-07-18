@@ -8,7 +8,7 @@ export default class ResourcesController {
    * Display a list of records
    */
   async index({ inertia }: HttpContext) {
-    const resources = await Resource.all()
+    const resources = await Resource.query().preload('type').orderBy('updatedAt', 'desc')
     return inertia.render('dashboard/resources/index', { resources })
   }
 
@@ -24,7 +24,15 @@ export default class ResourcesController {
    * Handle form submission for the create action
    */
   async store({ request, response }: HttpContext) {
-    const data = request.only(['title', 'sourceUri', 'canonicalId', 'type', 'organizationId'])
+    const data = request.only([
+      'title',
+      'sourceUri',
+      'canonicalId',
+      'resourceTypeId',
+      'organizationId',
+    ])
+    console.log(data)
+
     await createResourceValidator.validate(data)
     const resource = await Resource.create(data)
     return response.redirect().toRoute('dashboard.resources.show', { id: resource.id })
@@ -36,8 +44,11 @@ export default class ResourcesController {
   async show({ params, inertia }: HttpContext) {
     const resource = await Resource.query()
       .where('id', params.id)
+      .preload('type')
       .preload('organization')
-      .preload('representations')
+      .preload('representations', (representationQuery) => {
+        representationQuery.preload('type').preload('status').orderBy('createdAt', 'desc')
+      })
       .firstOrFail()
     return inertia.render('dashboard/resources/show', { resource })
   }

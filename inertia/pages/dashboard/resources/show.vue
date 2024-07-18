@@ -4,12 +4,15 @@ import DefaultLayout from '~/components/layouts/page/Default.vue'
 import Spinner from '~/components/feedback/Spinner.vue'
 import { PhotoIcon, TrashIcon, ArrowUpRightIcon, PaperAirplaneIcon } from '@heroicons/vue/24/outline'
 import FormInputError from '~/components/feedback/FormInputError.vue'
+import ResourceTypes from '#enums/resource_types'
+import RepresentationTypes from '#enums/representation_types'
+import ModerationStatuses from '#enums/moderation_statuses'
 
 defineProps({ resource: {
   id: Number,
   title: String,
   sourceUri: String,
-  type: String,
+  type: Object,
   canonicalId: String,
   createdAt: String,
   updatedAt: String,
@@ -19,15 +22,17 @@ const page = usePage()
 
 const form = useForm({
   resourceId: page.props.resource.id,
-  type: null,
+  representationTypeId: RepresentationTypes.ALTTEXT,
+  moderationStatusId: ModerationStatuses.WAITING_APPROVAL,
   prompt: 'Create descriptive alt text for this image to improve accessibility for people with impaired vision. The alt text should describe the content and mood of the image, use text recognition, and be less than 125 characters in length.',
   uri: page.props.resource.sourceUri,
 })
 
 let title = page.props.resource.title
 if (!title && page.props.resource.type) {
-  title = `Untitled ${page.props.resource.type.toLowerCase()}`
+  title = `Untitled ${page.props.resource.type.name.toLowerCase()}`
 }
+console.log(page.props.resource.representations)
 </script>
 
 <template>
@@ -53,7 +58,7 @@ if (!title && page.props.resource.type) {
           </Link>
         </div>
         <div class="my-6 border-t border-neutral-300 dark:border-neutral-600">
-          <div v-if="resource.type === 'IMAGE'" class="m-4 flex justify-center">
+          <div v-if="resource.type.id === ResourceTypes.IMAGE" class="m-4 flex justify-center">
             <img :src="resource.sourceUri" alt="Resource Image" class="max-w-full h-auto z-0 shadow-md rounded-sm" />
           </div>
           <dl class="divide-y divide-neutral-300 dark:divide-neutral-600">
@@ -73,7 +78,7 @@ if (!title && page.props.resource.type) {
             </div>
             <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
               <dt class="text-sm font-medium leading-6 text-white">Type</dt>
-              <dd class="mt-1 text-sm leading-6 text-neutral-400 sm:col-span-2 sm:mt-0">{{ resource.type }}</dd>
+              <dd class="mt-1 text-sm leading-6 text-neutral-400 sm:col-span-2 sm:mt-0">{{ resource.type.name }}</dd>
             </div>
             <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
               <dt class="text-sm font-medium leading-6 text-white">Source</dt>
@@ -89,12 +94,12 @@ if (!title && page.props.resource.type) {
           <h2 class="text-xl my-4">Representations</h2>
           <ul class="flex flex-col space-y-4">
             <li v-for="representation in resource.representations" :key="representation.id" class="flex flex-col py-4 px-6 border border-accent-300 dark:border-accent-800 bg-accent-100 dark:bg-accent-900 rounded-xl shadow-md">
-              <dl class="flex flex-col space-y-2 p-2">
+              <dl class="flex flex-col space-y-6 p-2">
                 <div class="flex flex-row items-center space-x-2 text-sm">
                   <dt class="font-medium leading-6">ID</dt>
                   <dd>{{ representation.id }}</dd>
                 </div>
-                <div class="flex flex-col space-y-3 text-sm">
+                <div class="flex flex-col space-y-2 text-sm">
                   <dt class="font-medium">Prompt</dt>
                   <dd>
                     <blockquote class="pl-2 border-l-4 border-accent-500 dark:border-accent-700 text-sm">
@@ -102,19 +107,27 @@ if (!title && page.props.resource.type) {
                     </blockquote>
                   </dd>
                 </div>
-                <div class="flex flex-col space-y-3 text-sm">
-                  <dt class="font-medium">{{ representation.type.toLowerCase() }}</dt>
+                <div class="flex flex-col space-y-2 text-sm">
+                  <dt class="font-medium">{{ representation.type.name }}</dt>
                   <dd class="text-lg">
                     {{ representation.contents.message.content }}
                   </dd>
                 </div>
               </dl>
-              <Link :href="`/dashboard/representations/${representation.id}`" preserve-scroll method="delete" as="button" type="button" class="w-max bg-error rounded-full p-1.5 mt-4 text-sm font-semibold text-center text-nowrap no-underline">
-                <span>
-                  <TrashIcon class="w-4 h-4" />
-                  <span class="sr-only">Delete</span>
-                </span>
-              </Link>
+              <div class="flex flex-row space-x-4 items-center justify-end text-sm">
+                <div class="flex items-center">
+                  <span class="px-3 py-1 bg-secondary-300 dark:bg-secondary-700 rounded-full text-xs">
+                    <span class="font-medium mr-1">Status:</span>
+                    {{ representation.status.name }}
+                  </span>
+                </div>
+                <Link :href="`/dashboard/representations/${representation.id}`" preserve-scroll method="delete" as="button" type="button" class="w-max bg-error rounded-full p-1.5 no-underline text-neutral-50 bg-error-600">
+                  <span>
+                    <TrashIcon class="w-4 h-4" />
+                    <span class="sr-only">Delete</span>
+                  </span>
+                </Link>
+              </div>
             </li>
           </ul>
         </div>
@@ -129,13 +142,13 @@ if (!title && page.props.resource.type) {
             >
               <div>
                 <label for="representation-type" class="block text-sm font-medium leading-6">Representation Type</label>
-                <select id="representation-type" v-model="form.type" :class="form.errors.type ? 'ring-error-500' : 'focus:ring-accent-500'" class="block w-full rounded-md border-0 bg-neutral-100 dark:bg-neutral-600 py-1.5 text-neutral-900 dark:text-neutral-50 shadow-sm ring-1 dark:ring-0 ring-inset focus:ring-2 focus:ring-inset focus:outline-none sm:text-sm sm:leading-6">
-                  <option selected value="ALTTEXT">Alt text</option>
-                  <option disabled value="TEXT">Long description</option>
-                  <option disabled value="EMBEDDING">Embedding</option>
+                <select id="representation-type" v-model="form.representationTypeId" :class="form.errors.representationTypeId ? 'ring-error-500' : 'focus:ring-accent-500'" class="block w-full rounded-md border-0 bg-neutral-100 dark:bg-neutral-600 py-1.5 text-neutral-900 dark:text-neutral-50 shadow-sm ring-1 dark:ring-0 ring-inset focus:ring-2 focus:ring-inset focus:outline-none sm:text-sm sm:leading-6">
+                  <option selected :value="RepresentationTypes.ALTTEXT">Alt text</option>
+                  <option disabled :value="RepresentationTypes.TEXT">Long description</option>
+                  <option disabled :value="RepresentationTypes.EMBEDDING">Embedding</option>
                 </select>
                 <div class="block text-sm font-medium leading-6 text-neutral-400">Currently, only alt text is supported.</div>
-                <FormInputError :errors="form.errors.type" />
+                <FormInputError :errors="form.errors.representationTypeId" />
               </div>
               <div>
                 <label for="prompt" class="block text-sm font-medium leading-6">Prompt</label>
