@@ -20,3 +20,12 @@ export const loginValidator = vine.compile(
     password: vine.string(),
   })
 )
+
+export const updateValidator = vine.compile(
+  vine.object({
+    fullName: vine.string().maxLength(100),
+    email: vine.string().email().normalizeEmail(),
+    userRoleId: vine.number(),
+    organizations: vine.array(vine.number()),
+  })
+)

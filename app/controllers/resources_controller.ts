@@ -31,8 +31,6 @@ export default class ResourcesController {
       'resourceTypeId',
       'organizationId',
     ])
-    console.log(data)
-
     await createResourceValidator.validate(data)
     const resource = await Resource.create(data)
     return response.redirect().toRoute('dashboard.resources.show', { id: resource.id })

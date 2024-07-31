@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Head, Link, usePage, useForm } from '@inertiajs/vue3'
 import DefaultLayout from '~/components/layouts/page/Default.vue'
-import Spinner from '~/components/feedback/Spinner.vue'
+import Badge from '~/components/elements/Badge.vue'
 import { PhotoIcon, TrashIcon, ArrowUpRightIcon, PaperAirplaneIcon } from '@heroicons/vue/24/outline'
 import FormInputError from '~/components/feedback/FormInputError.vue'
 import ResourceTypes from '#enums/resource_types'
@@ -32,7 +32,6 @@ let title = page.props.resource.title
 if (!title && page.props.resource.type) {
   title = `Untitled ${page.props.resource.type.name.toLowerCase()}`
 }
-console.log(page.props.resource.representations)
 </script>
 
 <template>
@@ -115,12 +114,7 @@ console.log(page.props.resource.representations)
                 </div>
               </dl>
               <div class="flex flex-row space-x-4 items-center justify-end text-sm">
-                <div class="flex items-center">
-                  <span class="px-3 py-1 bg-secondary-300 dark:bg-secondary-700 rounded-full text-xs">
-                    <span class="font-medium mr-1">Status:</span>
-                    {{ representation.status.name }}
-                  </span>
-                </div>
+                <Badge label="Status">{{ representation.status.name }}</Badge>
                 <Link :href="`/dashboard/representations/${representation.id}`" preserve-scroll method="delete" as="button" type="button" class="w-max bg-error rounded-full p-1.5 no-underline text-neutral-50 bg-error-600">
                   <span>
                     <TrashIcon class="w-4 h-4" />

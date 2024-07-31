@@ -14,7 +14,6 @@ export default class RepresentationsController {
       'prompt',
       'uri',
     ])
-    console.log(data)
     await createRepresentationValidator.validate(data)
     const vision = new VisionService()
     const generatedMessageData = await vision.generate(data.prompt, data.uri)

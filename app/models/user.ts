@@ -22,10 +22,13 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
   @hasOne(() => UserRole, {
     localKey: 'userRoleId',
+    foreignKey: 'id',
   })
   declare role: HasOne<typeof UserRole>
 
-  @manyToMany(() => Organization)
+  @manyToMany(() => Organization, {
+    pivotTable: 'user_organization',
+  })
   declare organizations: ManyToMany<typeof Organization>
 
   @column()

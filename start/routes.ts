@@ -18,6 +18,7 @@ const RepresentationsController = () => import('#controllers/representations_con
 const ResourcesController = () => import('#controllers/resources_controller')
 const ApiResourcesController = () => import('#controllers/api/v1/resources_controller')
 const OrganizationsController = () => import('#controllers/organizations_controller')
+const UsersController = () => import('#controllers/users_controller')
 
 // Home.
 router.on('/').renderInertia('home').as('home')
@@ -42,6 +43,7 @@ router
       .only(['store', 'destroy'])
     router.resource('resources', ResourcesController).as('resources')
     router.resource('organizations', OrganizationsController).as('organizations')
+    router.resource('users', UsersController).as('users')
   })
   .use(middleware.auth())
   .prefix('dashboard')
