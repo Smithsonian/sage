@@ -8,6 +8,7 @@ defineProps({ organization: {
   title: String,
   createdAt: String,
   updatedAt: String,
+  users: Array,
 } })
 
 </script>
@@ -15,7 +16,7 @@ defineProps({ organization: {
 <template>
   <div>
     <Head :title="organization.title" />
-    <DefaultLayout>
+    <DefaultLayout :notification="$page.props.notification">
       <template #main>
         <div class="flex space-x-between items-center justify-between">
           <h1 class="text-2xl">{{ organization.title }}</h1>
@@ -33,6 +34,12 @@ defineProps({ organization: {
               <dd class="mt-1 text-sm leading-6 text-neutral-400 sm:col-span-2 sm:mt-0">{{ organization.id }}</dd>
             </div>
           </dl>
+          <div v-if="organization.users.length > 0" class="flex flex-col space-y-4 mt-6">
+            <h2 class="text-xl">Members</h2>
+            <Link :href="`/dashboard/users/${user.id}`" v-for="user in organization.users" :key="user.id">
+              {{ user.fullName }}
+            </Link>
+          </div>
         </div>
       </template>
     </DefaultLayout>

@@ -1,8 +1,9 @@
 import { DateTime } from 'luxon'
-import type { BelongsTo } from '@adonisjs/lucid/types/relations'
-import { BaseModel, column, belongsTo } from '@adonisjs/lucid/orm'
+import type { BelongsTo, HasOne } from '@adonisjs/lucid/types/relations'
+import { BaseModel, column, hasOne, belongsTo } from '@adonisjs/lucid/orm'
 import Resource from '#models/resource'
-
+import RepresentationType from '#models/representation_type'
+import ModerationStatus from '#models/moderation_status'
 export default class Representation extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
@@ -14,7 +15,19 @@ export default class Representation extends BaseModel {
   declare resource: BelongsTo<typeof Resource>
 
   @column()
-  declare type: string
+  declare representationTypeId: number
+
+  @belongsTo(() => RepresentationType)
+  declare type: BelongsTo<typeof RepresentationType>
+
+  @column()
+  declare moderationStatusId: number
+
+  @hasOne(() => ModerationStatus, {
+    foreignKey: 'id',
+    localKey: 'moderationStatusId',
+  })
+  declare status: HasOne<typeof ModerationStatus>
 
   @column({ prepare: (value) => JSON.stringify(value) })
   declare contents: object

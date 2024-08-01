@@ -9,7 +9,7 @@ export default class extends BaseSchema {
       table.string('full_name').nullable()
       table.string('email', 254).notNullable().unique()
       table.string('password').notNullable()
-
+      table.integer('user_role_id').unsigned().references('user_roles.id').notNullable()
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()
     })

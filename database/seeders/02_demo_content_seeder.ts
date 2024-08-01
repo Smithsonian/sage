@@ -2,6 +2,7 @@ import { BaseSeeder } from '@adonisjs/lucid/seeders'
 
 import Organization from '#models/organization'
 import Resource from '#models/resource'
+import ResourceTypes from '#enums/resource_types'
 
 export default class extends BaseSeeder {
   async run() {
@@ -23,12 +24,14 @@ export default class extends BaseSeeder {
         sourceUri: 'https://ids.si.edu/ids/deliveryService?id=SAAM-2020.25.1_1',
         canonicalId: 'SAAM-2020.25.1',
         organizationId: 1,
+        resourceTypeId: ResourceTypes.IMAGE,
       },
       {
         title: 'Untitled',
         sourceUri: 'https://ids.si.edu/ids/deliveryService?id=HMSG-66.2747-000001',
         canonicalId: 'HMSG-66.2747',
         organizationId: 2,
+        resourceTypeId: ResourceTypes.IMAGE,
       },
     ])
   }

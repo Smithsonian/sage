@@ -9,19 +9,14 @@ export default class extends BaseSchema {
       table.string('source_uri').notNullable()
       table.string('title').nullable()
       table.string('canonical_id').index().nullable()
-      table
-        .enum('type', ['IMAGE', 'TEXT', 'AUDIO', 'VIDEO'], {
-          enumName: 'resource_type',
-          useNative: true,
-        })
-        .defaultTo('IMAGE')
-      table.timestamp('created_at')
-      table.timestamp('updated_at')
+      table.integer('resource_type_id').unsigned().references('resource_types.id').notNullable()
       table.integer('organization_id').unsigned().references('organizations.id').onDelete('CASCADE')
+      table.timestamp('created_at').notNullable()
+      table.timestamp('updated_at').notNullable()
     })
   }
 
   async down() {
-    this.schema.raw('DROP TYPE IF EXISTS resource_type').dropTable(this.tableName)
+    this.schema.dropTable(this.tableName)
   }
 }

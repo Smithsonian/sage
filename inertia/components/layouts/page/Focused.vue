@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import ThemeSwitcher from '~/components/actions/ThemeSwitcher.vue'
+import Alert from '~/components/feedback/Alert.vue'
+defineProps<{ notification?: Object | undefined, errors?: Array<string> | undefined }>();
 </script>
 
 <template>
@@ -12,5 +14,11 @@ import ThemeSwitcher from '~/components/actions/ThemeSwitcher.vue'
         <slot v-cloak></slot>
       </div>
     </section>
+    <div class="absolute inset-x-0 bottom-2 md:bottom-6 lg:bottom-12 flex space-x-4 lg:space-x-6 items-center justify-center">
+      <Alert v-if="notification" :notification="notification" :key="notification.id" :auto-close="true" />
+      <div v-if="errors" class="flex flex-col items-center justify-center space-y-4">
+        <Alert v-for="error in errors" :notification="{ type: 'error', message: error }" :key="error" :auto-close="false" />
+      </div>
+    </div>
   </div>
 </template>

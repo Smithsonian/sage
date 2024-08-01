@@ -1,5 +1,5 @@
 import Organization from '#models/organization'
-
+import { createOrganizationValidator } from '#validators/organization'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class OrganizationsController {
@@ -21,15 +21,15 @@ export default class OrganizationsController {
   /**
    * Handle form submission for the create action
    */
-  async store({ request, response }: HttpContext) {
+  async store({ request, response, session }: HttpContext) {
     const data = request.only(['title', 'description'])
+    await createOrganizationValidator.validate(data)
     const organization = await Organization.create(data)
-    // await cache.set(`$page:${page.id}`, page)
-    // session.flash('notification', {
-    //   id: page.id,
-    //   type: 'success',
-    //   message: `Published page! <em>${page.title}</em>`,
-    // })
+    session.flash('notification', {
+      id: organization.id,
+      type: 'success',
+      message: `Created! <em>${organization.title}</em>`,
+    })
     return response.redirect().toRoute('dashboard.organizations.show', { id: organization.id })
   }
 
@@ -37,7 +37,10 @@ export default class OrganizationsController {
    * Show individual record
    */
   async show({ params, inertia }: HttpContext) {
-    const organization = await Organization.findByOrFail('id', params.id)
+    const organization = await Organization.query()
+      .where('id', params.id)
+      .preload('users')
+      .firstOrFail()
     return inertia.render('dashboard/organizations/show', { organization })
   }
 
@@ -54,11 +57,14 @@ export default class OrganizationsController {
   /**
    * Delete record
    */
-  async destroy({ params, response }: HttpContext) {
+  async destroy({ params, response, session }: HttpContext) {
     const organization = await Organization.findByOrFail('id', params.id)
     await organization.delete()
-    // TODO: Add a flash message.
+    session.flash('notification', {
+      id: params.id,
+      type: 'info',
+      message: `Deleted! <em>${organization.title}</em>`,
+    })
     return response.redirect().toRoute('dashboard.organizations.index')
   }
-
 }

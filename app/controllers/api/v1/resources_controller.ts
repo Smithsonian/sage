@@ -17,8 +17,11 @@ export default class ResourcesController {
   async show({ params }: HttpContext) {
     const resource = await Resource.query()
       .where('id', params.id)
+      .preload('type')
       .preload('organization')
-      .preload('representations')
+      .preload('representations', (representationQuery) => {
+        representationQuery.preload('type').preload('status').orderBy('createdAt', 'desc')
+      })
       .firstOrFail()
     return resource
   }

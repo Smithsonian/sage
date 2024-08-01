@@ -2,12 +2,13 @@
 import { Head, Link } from '@inertiajs/vue3'
 import DefaultLayout from '~/components/layouts/page/Default.vue'
 import { PhotoIcon } from '@heroicons/vue/24/outline'
+import ResourceType from '#enums/resource_types'
 
 defineProps({ resources: [{
   id: Number,
   title: String,
   sourceUri: String,
-  type: String,
+  type: Object,
   canonicalId: String,
   createdAt: String,
   updatedAt: String,
@@ -32,7 +33,7 @@ defineProps({ resources: [{
           <ul role="list" class="divide-y divide-neutral-300">
             <li v-for="resource in resources" :key="resource.id" class="flex flex-col space-y-2 px-6 py-4">
               <Link :href="`/dashboard/resources/${resource.id}`" class="flex flex-row space-x-2 items-center justify-start">
-                <PhotoIcon v-if="resource.type === 'IMAGE'" class="w-5 h-5" />
+                <PhotoIcon v-if="resource.type.id === ResourceType.IMAGE" class="w-5 h-5" />
                 <p>{{ resource.title ?? `Untitled ${resource.type.toLowerCase()}` }}</p>
               </Link>
             </li>

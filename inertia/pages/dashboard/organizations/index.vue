@@ -14,7 +14,7 @@ defineProps({ organizations: [{
 <template>
   <div>
     <Head title="Organizations" />
-    <DefaultLayout>
+    <DefaultLayout :notification="$page.props.notification">
       <template #main>
         <div class="flex space-x-between items-center justify-between">
           <h1 class="text-2xl">Organizations</h1>
