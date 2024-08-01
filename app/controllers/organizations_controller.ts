@@ -37,7 +37,10 @@ export default class OrganizationsController {
    * Show individual record
    */
   async show({ params, inertia }: HttpContext) {
-    const organization = await Organization.findByOrFail('id', params.id)
+    const organization = await Organization.query()
+      .where('id', params.id)
+      .preload('users')
+      .firstOrFail()
     return inertia.render('dashboard/organizations/show', { organization })
   }
 

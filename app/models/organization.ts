@@ -11,8 +11,10 @@ export default class Organization extends BaseModel {
   @hasMany(() => Resource)
   declare resources: HasMany<typeof Resource>
 
-  @manyToMany(() => User)
-  declare organizations: ManyToMany<typeof User>
+  @manyToMany(() => User, {
+    pivotTable: 'user_organization',
+  })
+  declare users: ManyToMany<typeof User>
 
   @column({ isPrimary: true })
   declare id: number

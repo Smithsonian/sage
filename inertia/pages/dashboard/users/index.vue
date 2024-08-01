@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Head, Link, usePage, useForm } from '@inertiajs/vue3'
 import DefaultLayout from '~/components/layouts/page/Default.vue'
-import Spinner from '~/components/feedback/Spinner.vue'
 import { UserIcon } from '@heroicons/vue/24/outline'
 import FormInputError from '~/components/feedback/FormInputError.vue'
 import Badge from '~/components/elements/Badge.vue'

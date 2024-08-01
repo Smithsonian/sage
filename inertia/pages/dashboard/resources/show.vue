@@ -2,6 +2,7 @@
 import { Head, Link, usePage, useForm } from '@inertiajs/vue3'
 import DefaultLayout from '~/components/layouts/page/Default.vue'
 import Badge from '~/components/elements/Badge.vue'
+import Spinner from '~/components/feedback/Spinner.vue'
 import { PhotoIcon, TrashIcon, ArrowUpRightIcon, PaperAirplaneIcon } from '@heroicons/vue/24/outline'
 import FormInputError from '~/components/feedback/FormInputError.vue'
 import ResourceTypes from '#enums/resource_types'
